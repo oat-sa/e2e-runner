@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost",
+  "integrationFolder": "exampleTests",
+  "screenshotsFolder": "screenshots",
+  "video": false,
+  "videosFolder": "videos",
+  "fixturesFolder": "fixtures",
+  "supportFile": "support",
+  "pluginsFile": "plugins",
+  "testFiles": "**/*.spec.js"
+}
