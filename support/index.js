@@ -16,11 +16,11 @@
  * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
-import './auth.js';
-import './input.js';
-import './lti.js';
-import './server.js';
+// import './auth.js';
+// import './input.js';
+// import './lti.js';
+// import './server.js';
 
-// third-party plugins which add commands
+// third-party plugins which add to cy.Command
 import 'cypress-plugin-snapshots/commands';
 import 'cypress-file-upload';

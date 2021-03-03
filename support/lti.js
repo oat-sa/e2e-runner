@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA ;
+ * Copyright (c) 2020-21 (original work) Open Assessment Technologies SA ;
  */
 
 import oauth from 'oauth-sign';
@@ -133,6 +133,8 @@ function getLtiOptions(options) {
  * Launch a LTI application.
  *
  * @example
+ * Cypress.Commands.add('ltiLaunch', ltiLaunch);
+ *
  * // launch a new application of the resource
  * cy.ltiLaunch({ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
  *
@@ -141,7 +143,7 @@ function getLtiOptions(options) {
  *
  * @param {ltiOptions} options - The options to apply
  */
-Cypress.Commands.add('ltiLaunch', options => {
+export function ltiLaunch(options) {
     const ltiOptions = getLtiOptions(options);
 
     if (ltiOptions.ltiAccessToken) {
@@ -184,4 +186,29 @@ Cypress.Commands.add('ltiLaunch', options => {
             body: ltiParams
         });
     }
-});
+}
+
+/**
+ * Launch a LTI application via the LTI Demo Tool
+ *
+ * @example
+ * Cypress.Commands.add('ltiLaunchViaTool', ltiLaunchViaTool);
+ * cy.ltiLaunch({toolUrl: 'http://demo.tool', regstration: 'default', ltiLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/', ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
+ *
+ * @param {ltiOptions} options
+ */
+export function ltiLaunchViaTool(options) {
+    const toolUrl = options.toolUrl;
+    const registration = options.registration;
+    const ltiLaunchUrl = options.ltiLaunchUrl;
+    const ltiResourceId = options.ltiResourceId;
+
+    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiLaunchUrl}${ltiResourceId}`);
+
+    cy.get('button[name="lti_resource_link_launch[submit]"]').click();
+
+    cy.get('.row .card-footer a').then(($el) => {
+        const ltiLink = $el.get(0).getAttribute('href');
+        cy.visit(ltiLink);
+    });
+}
