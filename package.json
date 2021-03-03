@@ -9,7 +9,7 @@
   "license": "GPL-2.0",
   "scripts": {
     "test": "node scripts/test.js",
-    "lint": "eslint commands plugins scripts",
+    "lint": "eslint data support plugins scripts",
     "cy:open": "cypress open",
     "cy:run": "cypress run"
   },

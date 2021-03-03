@@ -185,26 +185,3 @@ Cypress.Commands.add('ltiLaunch', options => {
         });
     }
 });
-
-
-/**
- * Launch a delivery via LTI, by pre-populating a deployed LTI tool's fields
- * and using it to generate a valid launch link.
- *
- * @param {ltiOptions} options - The options to apply
- */
-Cypress.Commands.add('ltiLaunchViaTool', options => {
-    const toolUrl = options.toolUrl;
-    const launchUrl = options.ltiLaunchUrl;
-    const ltiResourceId = options.ltiResourceId;
-    const registration = options.registration;
-
-    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${launchUrl}${ltiResourceId}`);
-
-    cy.get('button[name="lti_resource_link_launch[submit]"]').click();
-
-    cy.get('.row .card-footer a').then(($el) => {
-        const ltiLink = $el.get(0).getAttribute('href');
-        cy.visit(ltiLink);
-    });
-});
