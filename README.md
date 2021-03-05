@@ -17,22 +17,20 @@ Next, add an npm script to your project's `package.json`:
 
 ```json
 "scripts": {
-    "cy:open": "cypress open --project cypress"
+    "cy:open": "cypress open"
 }
 ```
 
-The `--project` flag defines that a folder called `cypress` - relative to the project root - will be used as the basis for the local Cypress project.
-
-After running `npm run cy:open` for the first time, a folder structure will be created in your project root:
+After running `npm run cy:open` for the first time, `cypress.json` and the `cypress` folder will be created in your project root:
 
 <pre>
+|-- cypress.json      # Your main configuration file
 |-- cypress/
   |-- fixtures/         # Static fixtures for your tests
   |-- integration/      # Example tests / your tests
   |-- plugins/          # The place to init local Cypress plugins
   |-- screenshots/      # Output of failed tests
   |-- support/          # The place for local support commands
-  |-- cypress.json      # Your main configuration file
 </pre>
 
 ### Create environment config(s)
@@ -43,19 +41,22 @@ The values within this object can be accessed in your tests via `Cypress.env('ke
 
 ## Commands
 
-In your local project, and and all types of helpers can be defined within `support/`. Many of these will likely register commands using the `cy.Commands.add()` syntax.
-
-In `e2e-runner`'s `support/` folder, however, it's preferable to export plain functions, which can them be registered as commands in the projects that need them.
+In `e2e-runner`'s `support/` folder you will find files of reusable commands, grouped by topic. Each file registers a number of commands to the `Cypress.Commands` collection. To make these commands available in your local project, simply import the whole file for its side effects:
 
 ```js
-// e2e-runner/support/myfile.js
-export function myCommand(params) { ... }
+// e2e-runner/support/sharedCommands.js
+Cypress.Commands.add('myCommand', (params) => { ... });
+Cypress.Commands.add('myOtherCommand', (params) => { ... });
 
-// project/support/commands.js
-import { myCommand } from '@oat-sa-private/e2e-runner/support/lti.js';
-
-Cypress.Commands.add('myCommand', myCommand);
+// project/cypress/support/commands.js
+import '@oat-sa-private/e2e-runner/support/sharedCommands.js';
 ```
+
+In your local project's `support/` folder, any and all types of helpers can be defined, which may use or compose the imported commands if desired.
+
+### Commands from third-party dependencies
+
+TODO
 
 ## Plugins
 
@@ -67,7 +68,7 @@ Current recommendation is to install all plugins as dependencies of `e2e-runner`
 }
 ```
 
-There could also be a way to use both centralised and local plugins.
+There could also be a way to use both centralised and local plugins...
 
 ## Develop
 

@@ -133,7 +133,6 @@ function getLtiOptions(options) {
  * Launch a LTI application.
  *
  * @example
- * Cypress.Commands.add('ltiLaunch', ltiLaunch);
  *
  * // launch a new application of the resource
  * cy.ltiLaunch({ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
@@ -143,7 +142,7 @@ function getLtiOptions(options) {
  *
  * @param {ltiOptions} options - The options to apply
  */
-export function ltiLaunch(options) {
+Cypress.Commands.add('ltiLaunch', options => {
     const ltiOptions = getLtiOptions(options);
 
     if (ltiOptions.ltiAccessToken) {
@@ -186,29 +185,43 @@ export function ltiLaunch(options) {
             body: ltiParams
         });
     }
-}
+});
 
 /**
- * Launch a LTI application via the LTI Demo Tool
+ * Launch a LTI application with parameters via the LTI 1.3 Demo tool
  *
  * @example
- * Cypress.Commands.add('ltiLaunchViaTool', ltiLaunchViaTool);
  * cy.ltiLaunch({toolUrl: 'http://demo.tool', regstration: 'default', ltiLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/', ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
  *
  * @param {ltiOptions} options
  */
-export function ltiLaunchViaTool(options) {
+Cypress.Commands.add('ltiLaunchViaTool', options => {
     const toolUrl = options.toolUrl;
     const registration = options.registration;
     const ltiLaunchUrl = options.ltiLaunchUrl;
     const ltiResourceId = options.ltiResourceId;
+    const ltiReturnUrl = options.ltiReturnUrl;
+    const ltiLocale = options.ltiLocale;
 
     cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiLaunchUrl}${ltiResourceId}`);
 
+    // Fill claims field
+    if (ltiReturnUrl || ltiLocale) {
+        cy.get('#lti_resource_link_launch_claims').then(textarea => {
+            textarea.value = JSON.stringify({
+                "https://purl.imsglobal.org/spec/lti/claim/launch_presentation": {
+                    "return_url": ltiReturnUrl,
+                    "locale": ltiLocale
+                }
+            });
+        });
+    }
+
+    // Generate launch link
     cy.get('button[name="lti_resource_link_launch[submit]"]').click();
 
     cy.get('.row .card-footer a').then(($el) => {
         const ltiLink = $el.get(0).getAttribute('href');
         cy.visit(ltiLink);
     });
-}
+});

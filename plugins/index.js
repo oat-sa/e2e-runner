@@ -44,7 +44,6 @@ module.exports = (on, config) => {
 
     initSnapshotPlugin(on, config);
 
-    console.log(config);
     return config;
 };
 
