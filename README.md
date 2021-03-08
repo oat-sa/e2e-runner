@@ -28,16 +28,28 @@ After running `npm run cy:open` for the first time, `cypress.json` and the `cypr
 |-- cypress/
   |-- fixtures/         # Static fixtures for your tests
   |-- integration/      # Example tests / your tests
-  |-- plugins/          # The place to init local Cypress plugins
+  |-- plugins/          #
   |-- screenshots/      # Output of failed tests
   |-- support/          # The place for local support commands
 </pre>
 
 ### Create environment config(s)
 
-Create a file `cypress/cypress.env.json` containing values specific to your test environment. You may want more than one version of this file if you wish to test on several envs (e.g. local / remote).
+Create a file `cypress.env.json` containing values specific to your test environment. You may want more than one version of this file if you wish to test on several envs (e.g. local / remote).
 
-The values within this object can be accessed in your tests via `Cypress.env('keyName')`.
+Alternatively, you can use a different env file by configuring, in `cypress.json`:
+
+```json
+{
+    "env": {
+        "configFile": "path/to/another/file.json"
+    }
+}
+```
+
+This opens up the possibility to change environment configs via the CLI (see [Scripts](#scripts)).
+
+The values within this object can be accessed in your tests via `Cypress.env('keyName')`. Nested values are supported too.
 
 ## Commands
 
@@ -56,7 +68,7 @@ In your local project's `support/` folder, any and all types of helpers can be d
 
 ### Commands from third-party dependencies
 
-TODO
+Some plugins also register commands. You can import these files (for their side effects) in you local project's support file.
 
 ## Plugins
 
@@ -68,9 +80,7 @@ Current recommendation is to install all plugins as dependencies of `e2e-runner`
 }
 ```
 
-There could also be a way to use both centralised and local plugins...
-
-## Develop
+## Development
 
 To develop in `e2e-runner` while having it linked to a local project:
 
@@ -92,60 +102,57 @@ Link the package
 ```sh
 # in e2e-runner
 npm link
+
 # in your project root
 npm link @oat-sa-private/e2e-runner
 ```
 
 The cloned repo should now be symlinked into your project's `node_modules`, for easy development.
 
-## NPM Commands
+## Scripts
 
-Scan for and run all tests:
+<a name="#scripts"></a>
+
+The following are examples of npm scripts you could set up in your local project. This takes advantage of Cypress configuration being [overridable by environment variables](https://docs.cypress.io/guides/guides/environment-variables.html) prefixed with `CYPRESS_` and by `--env` flags. This can be useful in CI.
+
+Open Cypress interface
 
 ```sh
-npm run test
+npm run cy:open # mapped to "cypress open"
 ```
 
-Run specific test:
+Run Cypress headlessly
 
 ```sh
-npm run test <testname>
+npm run cy:run # mapped to "cypress run"
+```
+
+Run Cypress using another browser
+
+```sh
+npm run cy:run:firefox # mapped to "cypress run --browser firefox"
+```
+
+Run a specific test:
+
+```sh
+CYPRESS_testFiles="**/myTest.spec.js" npm run cy:run
+```
+
+Run tests from another folder:
+
+```sh
+CYPRESS_integrationFolder=exampleTests npm run cy:run
 ```
 
 Run tests on another domain:
 
 ```sh
-CYPRESS_baseUrl=http://example.com npm run test
+CYPRESS_baseUrl=http://example.com npm run cy:run
 ```
 
-Run tests from other location:
+Run tests with a whole other env config file:
 
 ```sh
-CYPRESS_integrationFolder=exampleTests npm run test
-```
-
-Modify pattern of test files:
-
-```sh
-CYPRESS_testFiles="**/e2e/*.spec.js" npm run test
-```
-
-Open Cypress interface
-
-```sh
-npm run cy:open
-```
-
-## Environment variables
-
-You can use environment variables in your tests from the command line, which can be defined like so:
-
-```sh
-CYPRESS_foo=bar npm run test
-```
-
-and you can use it in your test like:
-
-```js
-const foo = Cypress.env('foo');
+npm run cy:run:demoenv # mapped to cypress run --env cypress/envs/env-demo.json
 ```
