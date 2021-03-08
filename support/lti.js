@@ -130,6 +130,44 @@ function getLtiOptions(options) {
 }
 
 /**
+ * Builds an object representing the claims for an LTI launch
+ * TODO: extend supported claims, e.g. custom claims
+ * @param {ltiOptions} options
+ * @returns {Object} all claims, JSON format
+ */
+function prepareLtiClaims(options) {
+    const { ltiReturnUrl, ltiLocale } = options;
+    const claims = {};
+    const launchPresentationClaims = {};
+
+    if (ltiReturnUrl || ltiLocale) {
+        if (ltiReturnUrl) {
+            Object.assign(launchPresentationClaims, {
+                return_url: ltiReturnUrl
+            });
+        }
+        if (ltiLocale) {
+            Object.assign(launchPresentationClaims, {
+                locale: ltiLocale
+            });
+        }
+        Object.assign(claims, {
+            'https://purl.imsglobal.org/spec/lti/claim/launch_presentation': launchPresentationClaims
+        });
+    }
+
+    Cypress.log({
+        name: 'prepareLtiClaims',
+        message: 'LTI claims',
+        consoleProps() {
+            return claims;
+        }
+    });
+
+    return claims;
+}
+
+/**
  * Launch a LTI application.
  *
  * @example
@@ -137,7 +175,7 @@ function getLtiOptions(options) {
  * // launch a new application of the resource
  * cy.ltiLaunch({ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
  *
- * // take over an existing launch
+ * // take over an existing launch TODO: needs updating for cookie-based auth
  * cy.ltiLaunch({ltiAccessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI2YzBhZGJ0zNDU0-0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287-4'});
  *
  * @param {ltiOptions} options - The options to apply
@@ -191,37 +229,36 @@ Cypress.Commands.add('ltiLaunch', options => {
  * Launch a LTI application with parameters via the LTI 1.3 Demo tool
  *
  * @example
- * cy.ltiLaunch({toolUrl: 'http://demo.tool', regstration: 'default', ltiLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/', ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
+ * cy.ltiLaunchViaTool({
+ *   toolUrl: 'http://demo.tool',
+ *   registration: 'default',
+ *   ltiBaseLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/',
+ *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'
+ * });
  *
  * @param {ltiOptions} options
  */
 Cypress.Commands.add('ltiLaunchViaTool', options => {
     const toolUrl = options.toolUrl;
     const registration = options.registration;
-    const ltiLaunchUrl = options.ltiLaunchUrl;
+    const ltiBaseLaunchUrl = options.ltiBaseLaunchUrl;
     const ltiResourceId = options.ltiResourceId;
-    const ltiReturnUrl = options.ltiReturnUrl;
-    const ltiLocale = options.ltiLocale;
 
-    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiLaunchUrl}${ltiResourceId}`);
+    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiBaseLaunchUrl}${ltiResourceId}`);
 
     // Fill claims field
-    if (ltiReturnUrl || ltiLocale) {
-        cy.get('#lti_resource_link_launch_claims').then(textarea => {
-            textarea.value = JSON.stringify({
-                "https://purl.imsglobal.org/spec/lti/claim/launch_presentation": {
-                    "return_url": ltiReturnUrl,
-                    "locale": ltiLocale
-                }
+    const claims = prepareLtiClaims(options);
+
+    cy.get('#lti_resource_link_launch_claims')
+        .then(textarea => textarea[0].value = JSON.stringify(claims))
+        .then(() => {
+            // Generate launch link
+            cy.contains('Generate').click();
+
+            cy.contains('.btn', 'Launch tool').then(($el) => {
+                // link has target="_blank" which we don't want to obey
+                const ltiLink = $el.get(0).getAttribute('href');
+                cy.visit(ltiLink);
             });
         });
-    }
-
-    // Generate launch link
-    cy.get('button[name="lti_resource_link_launch[submit]"]').click();
-
-    cy.get('.row .card-footer a').then(($el) => {
-        const ltiLink = $el.get(0).getAttribute('href');
-        cy.visit(ltiLink);
-    });
 });
