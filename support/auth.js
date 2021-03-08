@@ -13,43 +13,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA ;
+ * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
-import users from '../data/users';
-import urls from '../data/urls';
-
-Cypress.Commands.add('getLoginData', (userType = 'admin') => users[userType][0]);
-
-Cypress.Commands.add('login', (userType = 'admin') => {
-    cy.getLoginData(userType).then(({ username, password }) => {
-        cy.request({
-            method: 'POST',
-            url: urls.login,
-            form: true,
-            body: {
-                login: username,
-                password: password,
-                loginForm_sent: 1
-            }
-        });
-    });
-});
-
-Cypress.Commands.add('guestLogin', () => {
-    cy.visit(urls.guestLogin);
-});
-
-Cypress.Commands.add('logout', () => {
+/**
+ * General-purpose login request matching the format of the TAO login form
+ * @param {Object} options
+ * @param {String} options.url
+ * @param {String} options.username
+ * @param {String} options.password
+ */
+Cypress.Commands.add('login', ({ url, username, password }) => {
     cy.request({
-        method: 'GET',
-        url: urls.logout
-    });
-});
-
-Cypress.Commands.add('guestLogout', () => {
-    cy.request({
-        method: 'GET',
-        url: urls.guestLogout
+        method: 'POST',
+        url,
+        form: true,
+        body: {
+            login: username,
+            password: password,
+            loginForm_sent: 1
+        }
     });
 });
