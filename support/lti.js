@@ -87,7 +87,7 @@ const ltiBuilders = {
 };
 
 /**
- * Loads options, defaulting to values from the config or for the internal defaults
+ * Loads options, defaulting to values from the config or from the internal defaults
  * @param {ltiOptions} options
  * @returns {ltiOptions}
  */
@@ -182,54 +182,36 @@ function prepareLtiClaims(options) {
  * // launch a new application of the resource
  * cy.ltiLaunch({ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
  *
- * // take over an existing launch TODO: needs updating for cookie-based auth
- * cy.ltiLaunch({ltiAccessToken: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiI2YzBhZGJ0zNDU0-0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287-4'});
- *
  * @param {ltiOptions} options - The options to apply
  */
 Cypress.Commands.add('ltiLaunch', options => {
     const ltiOptions = getLtiOptions(options);
+    const ltiBuilder = ltiBuilders[`lti${ltiOptions.ltiVersion}`];
+    const ltiParams = ltiBuilder && ltiBuilder(ltiOptions);
 
-    if (ltiOptions.ltiAccessToken) {
-        Cypress.log({
-            name: 'ltiLaunch',
-            message: 'Pre-built access token',
-            consoleProps() {
-                return {
-                    'LTI Access Token': ltiOptions.ltiAccessToken
-                };
-            }
-        });
+    Cypress.log({
+        name: 'ltiLaunch',
+        message: `${!ltiBuilder ? 'WARNING: Unsupported ' : ''}LTI version ${ltiOptions.ltiVersion}`,
+        consoleProps() {
+            return {
+                'LTI Version': ltiOptions.ltiVersion,
+                'LTI Resource ID': ltiOptions.ltiResourceId,
+                'LTI Launch URL': ltiOptions.ltiLaunchUrl,
+                'LTI Return URL': ltiOptions.ltiReturnUrl,
+                'LTI Key': ltiOptions.ltiKey,
+                'LTI Secret': ltiOptions.ltiSecret,
+                'LTI Role': ltiOptions.ltiRole,
+                'LTI Presentation Locale': ltiOptions.ltiLocale,
+                'LTI Params': ltiParams
+            };
+        }
+    });
 
-        cy.visit(`/?accessToken=${ltiOptions.ltiAccessToken}`);
-    } else {
-        const ltiBuilder = ltiBuilders[`lti${ltiOptions.ltiVersion}`];
-        const ltiParams = ltiBuilder && ltiBuilder(ltiOptions);
-
-        Cypress.log({
-            name: 'ltiLaunch',
-            message: `${!ltiBuilder ? 'WARNING: Unsupported ' : ''}LTI version ${ltiOptions.ltiVersion}`,
-            consoleProps() {
-                return {
-                    'LTI Version': ltiOptions.ltiVersion,
-                    'LTI Resource ID': ltiOptions.ltiResourceId,
-                    'LTI Launch URL': ltiOptions.ltiLaunchUrl,
-                    'LTI Return URL': ltiOptions.ltiReturnUrl,
-                    'LTI Key': ltiOptions.ltiKey,
-                    'LTI Secret': ltiOptions.ltiSecret,
-                    'LTI Role': ltiOptions.ltiRole,
-                    'LTI Presentation Locale': ltiOptions.ltiLocale,
-                    'LTI Params': ltiParams
-                };
-            }
-        });
-
-        cy.visit({
-            url: ltiOptions.ltiLaunchUrl,
-            method: 'POST',
-            body: ltiParams
-        });
-    }
+    cy.visit({
+        url: ltiOptions.ltiLaunchUrl,
+        method: 'POST',
+        body: ltiParams
+    });
 });
 
 /**
@@ -238,9 +220,9 @@ Cypress.Commands.add('ltiLaunch', options => {
  *
  * @example
  * cy.ltiLaunchViaTool({
- *   toolUrl: 'http://demo.tool',
+ *   toolUrl: 'http://demo.lti.app',
  *   registration: 'default',
- *   ltiBaseLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/',
+ *   ltiBaseLaunchUrl: 'https://launch.lti.app/api/v1/auth/launch-lti-1p3/',
  *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'
  * });
  *
