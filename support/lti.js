@@ -136,7 +136,7 @@ function getLtiOptions(options) {
  * @returns {Object} all claims, JSON format
  */
 function prepareLtiClaims(options) {
-    const { ltiReturnUrl, ltiLocale } = options;
+    const { ltiReturnUrl, ltiLocale, ltiContext } = options;
     const claims = {};
     const launchPresentationClaims = {};
 
@@ -153,6 +153,14 @@ function prepareLtiClaims(options) {
         }
         Object.assign(claims, {
             'https://purl.imsglobal.org/spec/lti/claim/launch_presentation': launchPresentationClaims
+        });
+    }
+
+    if (ltiContext) {
+        Object.assign(claims, {
+            'https://purl.imsglobal.org/spec/lti/claim/context': {
+                id: ltiContext
+            }
         });
     }
 
@@ -242,7 +250,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
     const toolUrl = options.toolUrl;
     const registration = options.registration;
     const ltiBaseLaunchUrl = options.ltiBaseLaunchUrl;
-    const ltiResourceId = options.ltiResourceId;
+    const ltiResourceId = options.ltiResourceId || '';
 
     cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiBaseLaunchUrl}${ltiResourceId}`);
 
