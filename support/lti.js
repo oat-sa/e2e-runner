@@ -212,9 +212,9 @@ Cypress.Commands.add('ltiLaunch', options => {
  *
  * @example
  * cy.ltiLaunchViaTool({
- *   toolUrl: 'http://demo.tool',
+ *   toolUrl: 'http://demo.lti.app',
  *   registration: 'default',
- *   ltiBaseLaunchUrl: 'https://lti.app/api/v1/auth/launch-lti-1p3/',
+ *   ltiBaseLaunchUrl: 'https://launch.lti.app/api/v1/auth/launch-lti-1p3/',
  *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'
  * });
  *
