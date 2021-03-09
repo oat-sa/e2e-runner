@@ -17,8 +17,6 @@ This plugin entry point also handles extending the main config, so it's advantag
 
 ### Bundled plugins
 
-- [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test) - brings `skipOn` and `onlyOn` syntax, like Jest
-- [cypress-file-upload](https://github.com/abramenal/cypress-file-upload) - facilitates working with file upload inputs
 - [cypress-plugin-snapshots](https://github.com/meinaart/cypress-plugin-snapshots) - takes visual snapshots for comparison with subsequent test runs
 
 ## Commands

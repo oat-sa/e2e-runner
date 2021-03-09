@@ -171,7 +171,6 @@ function prepareLtiClaims(options) {
  * Launch a LTI application.
  *
  * @example
- *
  * // launch a new application of the resource
  * cy.ltiLaunch({ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'});
  *
@@ -227,6 +226,7 @@ Cypress.Commands.add('ltiLaunch', options => {
 
 /**
  * Launch a LTI application with parameters via the LTI 1.3 Demo tool
+ * To work, toolUrl and ltiBaseLaunchUrl need to share same domain
  *
  * @example
  * cy.ltiLaunchViaTool({
@@ -255,7 +255,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
             // Generate launch link
             cy.contains('Generate').click();
 
-            cy.contains('.btn', 'Launch tool').then(($el) => {
+            cy.contains('.btn', 'Launch tool').then($el => {
                 // link has target="_blank" which we don't want to obey
                 const ltiLink = $el.get(0).getAttribute('href');
                 cy.visit(ltiLink);

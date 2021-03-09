@@ -8,7 +8,7 @@
   },
   "license": "GPL-2.0",
   "scripts": {
-    "lint": "eslint data support plugins scripts"
+    "lint": "eslint plugins support"
   },
   "keywords": [
     "oat",

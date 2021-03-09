@@ -54,7 +54,7 @@ npm run cy:run:firefox # mapped to "cypress run --browser firefox"
 Run a specific test:
 
 ```sh
-CYPRESS_testFiles="**/myTest.spec.js" npm run cy:run
+npx cypress run --spec '**/myTest.spec.js'
 ```
 
 Run tests from another folder:

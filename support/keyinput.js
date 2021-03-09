@@ -16,7 +16,7 @@
  * Copyright (c) 2021 (original work) Open Assessment Technologies SA ;
  */
 
- /**
+/**
  * Simulates a tab keypress
  * Should be deprecated if and when Native Events lands in Cypress
  * @see https://github.com/cypress-io/cypress/issues/311
