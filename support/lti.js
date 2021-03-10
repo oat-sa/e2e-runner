@@ -51,13 +51,14 @@ const defaultLtiOptions = {
 const ltiBuilders = {
     /**
      * Builds the LTI parameters for the version 1.0
-     * @property {String} ltiResourceId - The identifier of the resource to use
-     * @property {String} ltiLaunchUrl - The URL to call to launch the application
-     * @property {String} ltiReturnUrl - The URL to redirect to once the application is closed
-     * @property {String} ltiKey - The LTI key needed to connect the application
-     * @property {String} ltiSecret - The LTI secret needed to connect the application
-     * @property {String} ltiRole - The of the user who will launch the application
-     * @property {String} ltiLocale - The locale language of the application
+     * @param {ltiOptions} options
+     * @property {String} options.ltiResourceId - The identifier of the resource to use
+     * @property {String} options.ltiLaunchUrl - The URL to call to launch the application
+     * @property {String} options.ltiReturnUrl - The URL to redirect to once the application is closed
+     * @property {String} options.ltiKey - The LTI key needed to connect the application
+     * @property {String} options.ltiSecret - The LTI secret needed to connect the application
+     * @property {String} options.ltiRole - The of the user who will launch the application
+     * @property {String} options.ltiLocale - The locale language of the application
      * @returns {Object}
      */
     lti1p0({ ltiResourceId, ltiLaunchUrl, ltiKey, ltiSecret, ltiRole, ltiReturnUrl, ltiLocale }) {
