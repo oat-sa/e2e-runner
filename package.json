@@ -1,10 +1,10 @@
 {
-  "name": "@oat-sa-private/e2e-runner",
+  "name": "@oat-sa/e2e-runner",
   "version": "0.1.0",
   "displayName": "OAT end-to-end test runner",
   "description": "End-to-end test runner for OAT applications, based on Cypress",
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "license": "GPL-2.0",
   "scripts": {
@@ -30,8 +30,6 @@
     "@oat-sa/eslint-config-tao": "^1.0.0",
     "@oat-sa/prettier-config": "^0.1.1",
     "eslint": "^7.20.0",
-    "eslint-plugin-es": "^4.1.0",
-    "eslint-plugin-jsdoc": "^32.2.0",
     "prettier": "^2.2.1"
   },
   "dependencies": {
