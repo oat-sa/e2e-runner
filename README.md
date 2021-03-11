@@ -7,6 +7,9 @@ This is the core system, which contains only the Cypress library, some common pl
 ## Get started
 
 [Installation](./docs/install.md)
+
 [Development](./docs/development.md)
+
 [Plugins & Commands](./docs/plugins_commands.md)
+
 [Best Practices](./docs/best_practices.md)
