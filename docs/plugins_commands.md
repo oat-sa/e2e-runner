@@ -9,7 +9,7 @@ The recommendation is to install all needed plugins as dependencies of `e2e-runn
 ```json
 // cypress.json
 {
-  "pluginsFile": "../node_modules/@oat-sa-private/e2e-runner/plugins",
+  "pluginsFile": "../node_modules/@oat-sa/e2e-runner/plugins",
 }
 ```
 
@@ -29,7 +29,7 @@ Cypress.Commands.add('myCommand', (params) => { ... });
 Cypress.Commands.add('myOtherCommand', (params) => { ... });
 
 // project/cypress/support/commands.js
-import '@oat-sa-private/e2e-runner/support/sharedCommands.js';
+import '@oat-sa/e2e-runner/support/sharedCommands.js';
 ```
 
 In your local project's `support/` folder, any and all types of helpers can be defined, which may use or compose the imported commands if desired.
