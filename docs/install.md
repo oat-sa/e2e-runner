@@ -4,7 +4,7 @@ The `e2e-runner` is intended to be installed as a dependency in the project you 
 
 ```sh
 # in your project root
-npm install @oat-sa-private/e2e-runner --save-dev
+npm install @oat-sa/e2e-runner --save-dev
 ```
 
 Next, add npm scripts to your project's `package.json`:
