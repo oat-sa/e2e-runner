@@ -22,7 +22,7 @@ Link the package
 npm link
 
 # in your project root
-npm link @oat-sa-private/e2e-runner
+npm link @oat-sa/e2e-runner
 ```
 
 The cloned repo should now be symlinked into your project's `node_modules`, for easy development.
