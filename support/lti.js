@@ -137,7 +137,7 @@ function getLtiOptions(options) {
  * @returns {Object} all claims, JSON format
  */
 function prepareLtiClaims(options) {
-    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl } = options;
+    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl, ltiRole } = options;
     const claims = {};
     const launchPresentationClaims = {};
 
@@ -171,6 +171,11 @@ function prepareLtiClaims(options) {
                 context_memberships_url: nrpsMembershipsUrl,
                 service_versions: ['2.0']
             }
+        });
+    }
+    if(ltiRole){
+        Object.assign(claims, {
+            'https://purl.imsglobal.org/spec/lti/claim/roles': [ltiRole]
         });
     }
 
