@@ -173,7 +173,7 @@ function prepareLtiClaims(options) {
             }
         });
     }
-    if(ltiRole){
+    if (ltiRole) {
         Object.assign(claims, {
             'https://purl.imsglobal.org/spec/lti/claim/roles': [ltiRole]
         });
@@ -255,7 +255,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
     const claims = prepareLtiClaims(options);
 
     cy.get('#lti_resource_link_launch_claims')
-        .then(textarea => textarea[0].value = JSON.stringify(claims))
+        .then(textarea => (textarea[0].value = JSON.stringify(claims)))
         .then(() => {
             // Generate launch link
             cy.contains('Generate').click();
