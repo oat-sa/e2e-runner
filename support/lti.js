@@ -137,7 +137,7 @@ function getLtiOptions(options) {
  * @returns {Object} all claims, JSON format
  */
 function prepareLtiClaims(options) {
-    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl } = options;
+    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl, ltiRole } = options;
     const claims = {};
     const launchPresentationClaims = {};
 
@@ -171,6 +171,11 @@ function prepareLtiClaims(options) {
                 context_memberships_url: nrpsMembershipsUrl,
                 service_versions: ['2.0']
             }
+        });
+    }
+    if (ltiRole) {
+        Object.assign(claims, {
+            'https://purl.imsglobal.org/spec/lti/claim/roles': [ltiRole]
         });
     }
 
@@ -250,7 +255,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
     const claims = prepareLtiClaims(options);
 
     cy.get('#lti_resource_link_launch_claims')
-        .then(textarea => textarea[0].value = JSON.stringify(claims))
+        .then(textarea => (textarea[0].value = JSON.stringify(claims)))
         .then(() => {
             // Generate launch link
             cy.contains('Generate').click();
