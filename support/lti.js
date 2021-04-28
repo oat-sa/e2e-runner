@@ -260,7 +260,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
             // Generate launch link
             cy.contains('Generate').click();
 
-            cy.contains('.btn', 'Launch tool').then($el => {
+            cy.contains('.btn', 'Launch LtiResourceLinkRequest').then($el => {
                 // link has target="_blank" which we don't want to obey
                 const ltiLink = $el.get(0).getAttribute('href');
                 cy.visit(ltiLink);
