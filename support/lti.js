@@ -298,7 +298,5 @@ Cypress.Commands.add('getLtiLaunchUrl', options => {
             registration,
             claims
         }
-    }).then(response => {
-        return response.body.link;
-    });
+    }).then(response => response.body.link);
 });
