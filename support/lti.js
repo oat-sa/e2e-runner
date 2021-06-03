@@ -267,3 +267,36 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
             });
         });
 });
+
+/**
+ * Returns the launch URL of an LTI application
+ *
+ * The command uses the API of `demo-lti1p3`
+ * (https://github.com/oat-sa/demo-lti1p3/blob/master/doc/api.md#ltiresourcelinkrequest-launch-generation-endpoint)
+ *
+ * @example
+ * cy.ltiLaunchViaTool({
+ *   toolUrl: 'http://demo.lti.app/api/launch',
+ *   authToken: 'q4s7fv80n9eq5z5f7fgs',
+ *   registration: 'default',
+ *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'
+ * });
+ *
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('getLtiLaunchUrl', options => {
+    const { toolUrl, authToken, registration } = options;
+    const claims = prepareLtiClaims(options);
+
+    cy.request({
+        method: 'POST',
+        url: `${toolUrl}/api/platform/messages/ltiResourceLinkRequest/launch`,
+        auth: {
+            bearer: authToken
+        },
+        body: {
+            registration,
+            claims
+        }
+    }).then(response => response.body.link);
+});
