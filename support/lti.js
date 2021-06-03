@@ -285,9 +285,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
  * @param {ltiOptions} options
  */
 Cypress.Commands.add('getLtiLaunchUrl', options => {
-    const toolUrl = options.toolUrl;
-    const authToken = options.authToken;
-    const registration = options.registration;
+    const { toolUrl, authToken, registration } = options;
     const claims = prepareLtiClaims(options);
 
     cy.request({
