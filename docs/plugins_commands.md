@@ -4,20 +4,14 @@ Plugins and commands make up over 90% of what is provided by `e2e-runner`.
 
 ## Plugins
 
-The recommendation is to install all needed plugins as dependencies of `e2e-runner` only. Then, edit your local `cypress.json` to point to the `plugins` folder of `e2e-runner`:
+Shared plugins can be added to `e2e-runner`, either by writing them here, or installing as dependencies. The idea is to create a file in `e2e-runner/plugins/` which exports the functionality you want to expose.
 
-```json
-// cypress.json
-{
-  "pluginsFile": "../node_modules/@oat-sa/e2e-runner/plugins",
-}
-```
-
-This plugin entry point also handles extending the main config, so it's advantageous to stick with this centralised implementation rather than creating a local plugins function.
+Projects can then import the plugins they need and compose them in their local `pluginsFile`.
 
 ### Bundled plugins
 
 - [cypress-plugin-snapshots](https://github.com/meinaart/cypress-plugin-snapshots) - takes visual snapshots for comparison with subsequent test runs
+- extendConfig - Extends Cypress config file with environment variables
 
 ## Commands
 

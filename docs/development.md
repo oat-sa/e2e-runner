@@ -31,7 +31,7 @@ The cloned repo should now be symlinked into your project's `node_modules`, for 
 
 <a name="#scripts"></a>
 
-The following are examples of npm scripts you could set up in your local project. This takes advantage of Cypress configuration being [overridable by environment variables](https://docs.cypress.io/guides/guides/environment-variables.html) prefixed with `CYPRESS_` and by `--env` flags. This can be useful in CI.
+The following are **examples** of npm scripts you could set up in your local project. This takes advantage of Cypress configuration being [overridable by environment variables](https://docs.cypress.io/guides/guides/environment-variables.html) prefixed with `CYPRESS_` and by `--env` flags. This can be useful in CI.
 
 Open Cypress interface
 
