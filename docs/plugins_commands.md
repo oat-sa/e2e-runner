@@ -11,7 +11,7 @@ Projects can then import the plugins they need and compose them in their local `
 ### Bundled plugins
 
 - [cypress-plugin-snapshots](https://github.com/meinaart/cypress-plugin-snapshots) - takes visual snapshots for comparison with subsequent test runs
-- [cypress-file-upload](https://github.com/abramenal/cypress-file-upload) - helps with file uploads in the browser
+- extendConfig - Extends Cypress config file with environment variables
 
 ## Commands
 

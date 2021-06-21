@@ -23,7 +23,7 @@ After running `npm run cy:open` for the first time, `cypress.json` and the `cypr
 |-- cypress/
   |-- fixtures/         # Static fixtures for your tests
   |-- integration/      # Example tests / your tests
-  |-- plugins/          # Local plugins and plugins init file
+  |-- plugins/          # The place for local plugins
   |-- screenshots/      # Output of failed tests
   |-- support/          # The place for local support commands
 </pre>
