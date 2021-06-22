@@ -40,6 +40,9 @@ function extendConfig(config) {
     if (config && config.env && config.env.configFile) {
         return getConfigurationByFile(config.env.configFile).then(configJson => {
             Object.assign(config.env, configJson);
+            if (config.env.baseUrl) {
+                config.baseUrl = config.env.baseUrl;
+            }
             return config;
         });
     }
