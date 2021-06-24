@@ -30,6 +30,7 @@ import oauth from 'oauth-sign';
  * @property {String} ltiRole - The of the user who will launch the application
  * @property {String} ltiLocale - The locale language of the application
  * @property {String} ltiAccessToken - An access token to use instead of building it
+ * @property {Object} ltiCustom - Custom claims, such as availableActions and groups.allContexts
  */
 
 /**
@@ -132,12 +133,19 @@ function getLtiOptions(options) {
 
 /**
  * Builds an object representing the claims for an LTI launch
- * TODO: extend supported claims, e.g. custom claims
  * @param {ltiOptions} options
  * @returns {Object} all claims, JSON format
  */
 function prepareLtiClaims(options) {
-    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl, ltiRole } = options;
+    const {
+        ltiReturnUrl,
+        ltiLocale,
+        ltiContext,
+        nrps,
+        nrpsMembershipsUrl,
+        ltiRole,
+        ltiCustom
+    } = options;
     const claims = {};
     const launchPresentationClaims = {};
 
@@ -176,6 +184,12 @@ function prepareLtiClaims(options) {
     if (ltiRole) {
         Object.assign(claims, {
             'https://purl.imsglobal.org/spec/lti/claim/roles': [ltiRole]
+        });
+    }
+
+    if (ltiCustom) {
+        Object.assign(claims, {
+            'https://purl.imsglobal.org/spec/lti/claim/custom': ltiCustom
         });
     }
 
