@@ -1,6 +1,6 @@
 {
     "name": "@oat-sa/e2e-runner",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "displayName": "OAT end-to-end test runner",
     "description": "End-to-end test runner for OAT applications, based on Cypress",
     "publishConfig": {
