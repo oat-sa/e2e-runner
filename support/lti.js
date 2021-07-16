@@ -46,6 +46,13 @@ const defaultLtiOptions = {
 };
 
 /**
+ * Gets a random number having the expected number of digits
+ * @param {Number} digits
+ * @returns {Number}
+ */
+const randomInt = digits => Math.round(Math.random() * Math.pow(10, digits || 1));
+
+/**
  * List of internal LTI parameters builders per version
  * @type {Object}
  */
@@ -76,7 +83,8 @@ const ltiBuilders = {
             oauth_timestamp: timestamp,
             oauth_version: '1.0',
             // Context Parameters
-            context_id: `S${timestamp}${Math.round(Math.random() * 10)}`,
+            context_id: `S${timestamp}${randomInt(1)}`,
+            user_id: `${randomInt(6)}`,
             roles: ltiRole,
             launch_presentation_locale: ltiLocale,
             launch_presentation_return_url: ltiReturnUrl
