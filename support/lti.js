@@ -134,8 +134,7 @@ function getLtiOptions(options) {
     );
 
     refinedOptions.ltiLaunchUrl =
-        refinedOptions.ltiLaunchUrl ||
-        `${refinedOptions.ltiBaseLaunchUrl}${refinedOptions.ltiResourceId ? refinedOptions.ltiResourceId : ''}`;
+        refinedOptions.ltiLaunchUrl || `${refinedOptions.ltiBaseLaunchUrl}${refinedOptions.ltiResourceId || ''}`;
 
     return refinedOptions;
 }
