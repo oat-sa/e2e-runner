@@ -134,7 +134,7 @@ function getLtiOptions(options) {
     );
 
     refinedOptions.ltiLaunchUrl =
-        refinedOptions.ltiLaunchUrl || `${refinedOptions.ltiBaseLaunchUrl}${refinedOptions.ltiResourceId}`;
+        refinedOptions.ltiLaunchUrl || `${refinedOptions.ltiBaseLaunchUrl}${refinedOptions.ltiResourceId || ''}`;
 
     return refinedOptions;
 }
@@ -145,15 +145,7 @@ function getLtiOptions(options) {
  * @returns {Object} all claims, JSON format
  */
 function prepareLtiClaims(options) {
-    const {
-        ltiReturnUrl,
-        ltiLocale,
-        ltiContext,
-        nrps,
-        nrpsMembershipsUrl,
-        ltiRole,
-        ltiCustom
-    } = options;
+    const { ltiReturnUrl, ltiLocale, ltiContext, nrps, nrpsMembershipsUrl, ltiRole, ltiCustom } = options;
     const claims = {};
     const launchPresentationClaims = {};
 
