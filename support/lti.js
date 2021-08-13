@@ -299,7 +299,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
  * @param {ltiOptions} options
  */
 Cypress.Commands.add('getLtiLaunchUrl', options => {
-    const { toolUrl, authToken, registration } = options;
+    const { toolUrl, authToken, registration, targetLink, user } = options;
     const claims = prepareLtiClaims(options);
 
     cy.request({
@@ -309,8 +309,10 @@ Cypress.Commands.add('getLtiLaunchUrl', options => {
             bearer: authToken
         },
         body: {
+            target_link_uri: targetLink,
             registration,
-            claims
+            claims,
+            user
         }
     }).then(response => response.body.link);
 });
