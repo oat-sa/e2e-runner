@@ -314,3 +314,42 @@ Cypress.Commands.add('getLtiLaunchUrl', options => {
         }
     }).then(response => response.body.link);
 });
+
+/**
+ * Creates NRPS membership on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('createNRPSMembership', options => {
+    const { toolUrl, authToken, id, context, members, registration } = options;
+    cy.request({
+        method: 'POST',
+        url: `${toolUrl}/api/platform/nrps/memberships`,
+        auth: {
+            bearer: authToken
+        },
+        body: {
+            id,
+            context,
+            members,
+            registration
+        }
+    }).then(response => response);
+});
+
+/**
+ * Deletes NRPS membership on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('DeleteNRPSMembership', options => {
+    const { toolUrl, authToken, id } = options;
+
+    cy.request({
+        method: 'DELETE',
+        url: `${toolUrl}/api/platform/nrps/memberships/${id}`,
+        auth: {
+            bearer: authToken
+        }
+    }).then(response => response);
+});
