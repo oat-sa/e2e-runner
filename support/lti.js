@@ -373,3 +373,19 @@ Cypress.Commands.add('createACSAssessment', options => {
         }
     }).then(response => response.body.acs_url);
 });
+
+/**
+ * Deletes ACS assessment on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('deleteACSAssessment', options => {
+    const { toolUrl, authToken, id } = options;
+    cy.request({
+        method: 'DELETE',
+        url: `${toolUrl}/api/platform/proctoring/assessments/${id}`,
+        auth: {
+            bearer: authToken
+        }
+    }).then(response => response);
+});
