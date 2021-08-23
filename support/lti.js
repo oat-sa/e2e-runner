@@ -289,17 +289,25 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
  * (https://github.com/oat-sa/demo-lti1p3/blob/master/doc/api.md#ltiresourcelinkrequest-launch-generation-endpoint)
  *
  * @example
- * cy.ltiLaunchViaTool({
+ * cy.getLtiLaunchUrl({
  *   toolUrl: 'http://demo.lti.app/api/launch',
  *   authToken: 'q4s7fv80n9eq5z5f7fgs',
  *   registration: 'default',
- *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287'
+ *   ltiResourceId: '0d3d8b41-7af1-4ad1-9fc0-5f9b1db23287',
+ * body: {
+            target_link_uri: "https://testrunner-oat-demo.dev.gcp-eu.taocloud.org/api/v1/auth/launch-lti-1p3/44b26693d772",
+            registration,
+            claims,
+            user: {
+                id: "pepe"
+            }
+        }
  * });
  *
  * @param {ltiOptions} options
  */
 Cypress.Commands.add('getLtiLaunchUrl', options => {
-    const { toolUrl, authToken, registration } = options;
+    const { toolUrl, authToken, registration, targetLink, user } = options;
     const claims = prepareLtiClaims(options);
 
     cy.request({
@@ -309,8 +317,10 @@ Cypress.Commands.add('getLtiLaunchUrl', options => {
             bearer: authToken
         },
         body: {
+            target_link_uri: targetLink,
             registration,
-            claims
+            claims,
+            user
         }
     }).then(response => response.body.link);
 });
