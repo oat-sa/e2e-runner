@@ -334,7 +334,7 @@ Cypress.Commands.add('createNRPSMembership', options => {
             members,
             registration
         }
-    }).then(response => response);
+    });
 });
 
 /**
@@ -351,7 +351,7 @@ Cypress.Commands.add('DeleteNRPSMembership', options => {
         auth: {
             bearer: authToken
         }
-    }).then(response => response);
+    });
 });
 
 /**
@@ -387,5 +387,5 @@ Cypress.Commands.add('deleteACSAssessment', options => {
         auth: {
             bearer: authToken
         }
-    }).then(response => response);
+    });
 });
