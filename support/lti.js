@@ -324,3 +324,78 @@ Cypress.Commands.add('getLtiLaunchUrl', options => {
         }
     }).then(response => response.body.link);
 });
+
+/**
+ * Creates NRPS membership on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('createNRPSMembership', options => {
+    const { toolUrl, authToken, id, context, members, registration } = options;
+    cy.request({
+        method: 'POST',
+        url: `${toolUrl}/api/platform/nrps/memberships`,
+        auth: {
+            bearer: authToken
+        },
+        body: {
+            id,
+            context,
+            members,
+            registration
+        }
+    });
+});
+
+/**
+ * Deletes NRPS membership on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('DeleteNRPSMembership', options => {
+    const { toolUrl, authToken, id } = options;
+
+    cy.request({
+        method: 'DELETE',
+        url: `${toolUrl}/api/platform/nrps/memberships/${id}`,
+        auth: {
+            bearer: authToken
+        }
+    });
+});
+
+/**
+ * Creates ACS assessment on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('createACSAssessment', options => {
+    const { toolUrl, authToken, id, status } = options;
+    cy.request({
+        method: 'POST',
+        url: `${toolUrl}/api/platform/proctoring/assessments`,
+        auth: {
+            bearer: authToken
+        },
+        body: {
+            id,
+            status
+        }
+    }).then(response => response.body.acs_url);
+});
+
+/**
+ * Deletes ACS assessment on devkit
+ * The command uses the API of devkit-lti1p3: https://oat-sa.github.io/doc-lti1p3/devkit/doc/api/
+ * @param {ltiOptions} options
+ */
+Cypress.Commands.add('deleteACSAssessment', options => {
+    const { toolUrl, authToken, id } = options;
+    cy.request({
+        method: 'DELETE',
+        url: `${toolUrl}/api/platform/proctoring/assessments/${id}`,
+        auth: {
+            bearer: authToken
+        }
+    });
+});
