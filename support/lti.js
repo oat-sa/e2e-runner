@@ -62,11 +62,11 @@ const ltiBuilders = {
      * @param {ltiOptions} options
      * @property {String} options.ltiResourceId - The identifier of the resource to use
      * @property {String} options.ltiLaunchUrl - The URL to call to launch the application
-     * @property {String} options.ltiReturnUrl - The URL to redirect to once the application is closed
+     * @property {String} [options.ltiReturnUrl] - The URL to redirect to once the application is closed
      * @property {String} options.ltiKey - The LTI key needed to connect the application
      * @property {String} options.ltiSecret - The LTI secret needed to connect the application
      * @property {String} options.ltiRole - The of the user who will launch the application
-     * @property {String} options.ltiLocale - The locale language of the application
+     * @property {String} [options.ltiLocale] - The locale language of the application
      * @returns {Object}
      */
     lti1p0({ ltiResourceId, ltiLaunchUrl, ltiKey, ltiSecret, ltiRole, ltiReturnUrl, ltiLocale }) {
@@ -85,10 +85,15 @@ const ltiBuilders = {
             // Context Parameters
             context_id: `S${timestamp}${randomInt(1)}`,
             user_id: `${randomInt(6)}`,
-            roles: ltiRole,
-            launch_presentation_locale: ltiLocale,
-            launch_presentation_return_url: ltiReturnUrl
+            roles: ltiRole
         };
+        // Optional parameters
+        if (typeof ltiLocale === 'string' && ltiLocale.length) {
+            ltiParams.launch_presentation_locale = ltiLocale;
+        }
+        if (typeof ltiReturnUrl === 'string' && ltiReturnUrl.length) {
+            ltiParams.launch_presentation_return_url = ltiReturnUrl;
+        }
 
         ltiParams.oauth_signature = oauth.hmacsign('POST', ltiLaunchUrl, ltiParams, ltiSecret);
 
