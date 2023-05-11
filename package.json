@@ -1,6 +1,6 @@
 {
     "name": "@oat-sa/e2e-runner",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "displayName": "OAT end-to-end test runner",
     "description": "End-to-end test runner for OAT applications, based on Cypress",
     "publishConfig": {
@@ -27,16 +27,16 @@
     },
     "homepage": "https://github.com/oat-sa/e2e-runner#readme",
     "devDependencies": {
-        "@oat-sa/eslint-config-tao": "^1.1.1",
+        "@oat-sa/eslint-config-tao": "^2.0.0",
         "@oat-sa/prettier-config": "^0.1.1",
-        "eslint": "^7.32.0",
-        "prettier": "^2.5.1"
+        "eslint": "^8.39.0",
+        "prettier": "^2.8.8"
     },
     "dependencies": {
         "cypress": "^9.0.0",
         "cypress-file-upload": "^5.0.8",
         "cypress-plugin-snapshots": "^1.4.4",
-        "fs-extra": "^10.0.0",
+        "fs-extra": "^11.1.1",
         "oauth-sign": "^0.9.0"
     }
 }
