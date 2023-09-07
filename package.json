@@ -35,6 +35,7 @@
     "dependencies": {
         "cypress": "^9.0.0",
         "cypress-file-upload": "^5.0.8",
+        "cypress-visual-regression": "^3.0.0",
         "fs-extra": "^11.1.1",
         "oauth-sign": "^0.9.0"
     }
