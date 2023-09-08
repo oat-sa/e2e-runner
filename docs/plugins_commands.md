@@ -32,7 +32,40 @@ In your local project's `support/` folder, any and all types of helpers can be d
 
 Some plugins also register commands. You can import these files (for their side effects) in your local project's support file:
 
+#### Visual Testing Plugin ####
+
+```json
+// cypress.json
+{
+    "screenshotsFolder": "@oat-sa/e2e-runner/cypress/snapshots/actual",
+    "env": {
+        "SNAPSHOT_BASE_DIRECTORY": "@oat-sa/e2e-runner/cypress/snapshots/base",
+        "INTEGRATION_FOLDER": "@oat-sa/e2e-runner/cypress/integration",
+        "type": "base"
+    },
+    "trashAssetsBeforeRuns": true,
+    "videos": false
+}
+```
+
 ```js
 // project/cypress/support/index.js
-import 'cypress-plugin-snapshots/commands';
+const compareSnapshotCommand = require('cypress-visual-regression/dist/command');
+
+compareSnapshotCommand();
+```
+
+```js
+// project/cypress/plugins/index.js
+const extendConfig = require('@oat-sa/e2e-runner/plugins/extendConfig.js');
+const getCompareSnapshotsPlugin = require('cypress-visual-regression/dist/plugin');
+
+module.exports = (on, config) => {
+    // plugin inits
+    const snapshotConfig = getCompareSnapshotsPlugin(on, config);
+    config = {...config, ...snapshotConfig};
+
+    // apply secondary configfile from path defined by env.configFile
+    return extendConfig(config);
+}
 ```
