@@ -58,11 +58,11 @@ compareSnapshotCommand();
 ```js
 // project/cypress/plugins/index.js
 const extendConfig = require('@oat-sa/e2e-runner/plugins/extendConfig.js');
-const getCompareSnapshotsPlugin = require('cypress-visual-regression/dist/plugin');
+const initSnapshotPlugin = require('@oat-sa/e2e-runner/plugins/snapshots.js');
 
 module.exports = (on, config) => {
     // plugin inits
-    const snapshotConfig = getCompareSnapshotsPlugin(on, config);
+    const snapshotConfig = initSnapshotPlugin(on, config);
     config = {...config, ...snapshotConfig};
 
     // apply secondary configfile from path defined by env.configFile
