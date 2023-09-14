@@ -43,8 +43,7 @@ Some plugins also register commands. You can import these files (for their side 
         "INTEGRATION_FOLDER": "@oat-sa/e2e-runner/cypress/integration",
         "type": "base"
     },
-    "trashAssetsBeforeRuns": true,
-    "videos": false
+    "trashAssetsBeforeRuns": true
 }
 ```
 
@@ -68,4 +67,13 @@ module.exports = (on, config) => {
     // apply secondary configfile from path defined by env.configFile
     return extendConfig(config);
 }
+```
+Example test
+```js
+// test.spec.js
+cy.get('div').compareSnapshot('snapshot-name', {
+    errorThreshold: 0.01,
+    padding: [10, 20, 10, 20],
+    blackout: ['#test-div']
+})
 ```
