@@ -20,7 +20,7 @@
         "url": "git+https://github.com/oat-sa/e2e-runner.git"
     },
     "engines": {
-        "node": ">=10.0.0"
+        "node": ">=18.0.0"
     },
     "bugs": {
         "url": "https://github.com/oat-sa/e2e-runner/issues"
@@ -35,7 +35,7 @@
     "dependencies": {
         "cypress": "^9.0.0",
         "cypress-file-upload": "^5.0.8",
-        "cypress-plugin-snapshots": "^1.4.4",
+        "cypress-visual-regression": "^3.0.0",
         "fs-extra": "^11.1.1",
         "oauth-sign": "^0.9.0"
     }

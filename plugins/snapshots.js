@@ -13,12 +13,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 21 (original work) Open Assessment Technologies SA ;
+ * Copyright (c) 2021-2023 (original work) Open Assessment Technologies SA ;
  */
 
-const { initPlugin } = require('cypress-plugin-snapshots/plugin');
+const getCompareSnapshotsPlugin = require('cypress-visual-regression/dist/plugin');
 
 /**
  * @exports {Function} the plugin init function for cypress-plugin-snapshots
  */
-module.exports = initPlugin;
+module.exports = getCompareSnapshotsPlugin;
