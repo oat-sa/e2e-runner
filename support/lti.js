@@ -13,7 +13,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2020-21 (original work) Open Assessment Technologies SA ;
+ * Copyright (c) 2020-2024 (original work) Open Assessment Technologies SA ;
  */
 
 import oauth from 'oauth-sign';
@@ -31,6 +31,8 @@ import oauth from 'oauth-sign';
  * @property {String} ltiLocale - The locale language of the application
  * @property {String} ltiAccessToken - An access token to use instead of building it
  * @property {Object} ltiCustom - Custom claims, such as availableActions and groups.allContexts
+ * @property {Object} ltiBasicAuth - DevKit credentials
+ *
  */
 
 /**
@@ -117,7 +119,8 @@ function getLtiOptions(options) {
         ltiKey,
         ltiSecret,
         ltiRole,
-        ltiLocale
+        ltiLocale,
+        ltiBasicAuth,
     } = Cypress.env();
 
     const refinedOptions = Object.assign(
@@ -133,7 +136,8 @@ function getLtiOptions(options) {
             ltiKey,
             ltiSecret,
             ltiRole,
-            ltiLocale
+            ltiLocale,
+            ltiBasicAuth
         },
         options
     );
@@ -222,6 +226,7 @@ Cypress.Commands.add('ltiLaunch', options => {
     const ltiOptions = getLtiOptions(options);
     const ltiBuilder = ltiBuilders[`lti${ltiOptions.ltiVersion}`];
     const ltiParams = ltiBuilder && ltiBuilder(ltiOptions);
+    const {username, password} = ltiOptions.ltiBasicAuth;
 
     Cypress.log({
         name: 'ltiLaunch',
@@ -244,7 +249,9 @@ Cypress.Commands.add('ltiLaunch', options => {
     cy.visit({
         url: ltiOptions.ltiLaunchUrl,
         method: 'POST',
-        body: ltiParams
+        body: ltiParams,
+        username,
+        password
     });
 });
 
@@ -267,8 +274,9 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
     const registration = options.registration;
     const ltiBaseLaunchUrl = options.ltiBaseLaunchUrl;
     const ltiResourceId = options.ltiResourceId || '';
-
-    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiBaseLaunchUrl}${ltiResourceId}`);
+    const ltiBasicAuth = options.ltiBasicAuth;
+    const authObject = ltiBasicAuth ? {auth: ltiBasicAuth} : {};
+    cy.visit(`${toolUrl}?registration=${registration}&launch_url=${ltiBaseLaunchUrl}${ltiResourceId}`,  authObject);
 
     // Fill claims field
     const claims = prepareLtiClaims(options);
@@ -282,7 +290,7 @@ Cypress.Commands.add('ltiLaunchViaTool', options => {
             cy.contains('.btn', 'Launch').then($el => {
                 // link has target="_blank" which we don't want to obey
                 const ltiLink = $el.get(0).getAttribute('href');
-                cy.visit(ltiLink);
+                cy.visit(ltiLink, authObject);
             });
         });
 });
