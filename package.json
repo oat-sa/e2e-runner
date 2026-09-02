@@ -41,6 +41,7 @@
         "oauth-sign": "^0.9.0"
     },
     "overrides": {
-      "@babel/traverse": "^7.23.2"
+      "@babel/traverse": "^7.23.2",
+      "form-data": "^2.5.4"
     }
 }
