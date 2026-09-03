@@ -9,7 +9,7 @@
     "license": "GPL-2.0",
     "scripts": {
         "lint": "eslint plugins support",
-        "test": "node --test test/*.test.js"
+        "test": "node --test"
     },
     "keywords": [
         "oat",
@@ -21,7 +21,7 @@
         "url": "git+https://github.com/oat-sa/e2e-runner.git"
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=18.1.0"
     },
     "bugs": {
         "url": "https://github.com/oat-sa/e2e-runner/issues"
